@@ -1,0 +1,46 @@
+{
+  "name": "sa-picture-converter",
+  "version": "1.0.0",
+  "description": "图片格式转换器 - 支持常规图片格式、ICO和SVG",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --disable-gpu --disable-software-rasterizer",
+    "dev": "electron . --dev --disable-gpu --disable-software-rasterizer",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never"
+  },
+  "keywords": [
+    "图片转换",
+    "格式转换",
+    "electron",
+    "ico",
+    "svg"
+  ],
+  "author": "SA",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "icojs": "^0.4.0",
+    "sharp": "^0.34.5",
+    "svg2png": "^4.1.1"
+  },
+  "build": {
+    "appId": "com.sa.picture-converter",
+    "productName": "SA图片格式转换器",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "converter-icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "language": "2052"
+    }
+  }
+}

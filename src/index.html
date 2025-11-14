@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA图片格式转换器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 自定义标题栏 -->
+        <div class="custom-titlebar">
+            <div class="titlebar-content">
+                <div class="app-title">
+                    <svg class="app-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 19V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19Z" stroke="#9370DB" stroke-width="2"/>
+                        <path d="M9 9H15M9 12H15M9 15H13" stroke="#9370DB" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M7 7L7 7.01" stroke="#9370DB" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M7 12L7 12.01" stroke="#9370DB" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M7 15L7 15.01" stroke="#9370DB" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h1>SA图片格式转换器</h1>
+                </div>
+                <div class="titlebar-controls">
+                    <button id="minimize-btn" class="titlebar-btn minimize"></button>
+                    <button id="maximize-btn" class="titlebar-btn maximize"></button>
+                    <button id="close-btn" class="titlebar-btn close"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <main class="app-main">
+            <!-- 左侧文件列表 -->
+            <section class="file-section">
+                <div class="section-header">
+                    <h2>图片文件</h2>
+                    <div class="button-group">
+                        <button id="add-files-btn" class="btn btn-primary">添加文件</button>
+                        <button id="clear-files-btn" class="btn btn-secondary">清空</button>
+                    </div>
+                </div>
+                
+                <!-- 拖拽区域 -->
+                <div id="drop-zone" class="drop-zone">
+                    <div class="drop-zone-content">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 10L12 5L17 10" stroke="#9370DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 5V15" stroke="#9370DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M20 13V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V13" stroke="#9370DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>拖拽图片文件到此处</p>
+                        <p class="drop-zone-hint">或点击"添加文件"按钮选择</p>
+                    </div>
+                </div>
+                
+                <!-- 文件列表 -->
+                <div id="file-list" class="file-list">
+                    <!-- 文件项将通过JavaScript动态添加 -->
+                </div>
+            </section>
+
+            <!-- 右侧转换设置 -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <h2>转换设置</h2>
+                </div>
+                
+                <!-- 输出格式选择 -->
+                <div class="setting-group">
+                    <label for="output-format">输出格式</label>
+                    <select id="output-format" class="select-input">
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="gif">GIF</option>
+                        <option value="bmp">BMP</option>
+                        <option value="webp">WebP</option>
+                        <option value="ico">ICO</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                </div>
+
+                <!-- 输出质量设置 -->
+                <div class="setting-group">
+                    <label for="output-quality">输出质量</label>
+                    <div class="quality-slider">
+                        <input type="range" id="output-quality" min="1" max="100" value="90">
+                        <span id="quality-value">90%</span>
+                    </div>
+                </div>
+
+                <!-- 输出目录设置 -->
+                <div class="setting-group">
+                    <label for="output-directory">输出目录</label>
+                    <div class="directory-input">
+                        <input type="text" id="output-directory" class="text-input" placeholder="选择输出目录">
+                        <button id="browse-directory-btn" class="btn btn-secondary">浏览</button>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="same-directory" checked>
+                        <label for="same-directory">保存到原文件所在目录</label>
+                    </div>
+                </div>
+
+                <!-- 进度条 -->
+                <div id="progress-container" class="progress-container" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <div id="progress-text" class="progress-text">准备中...</div>
+                </div>
+
+                <!-- 转换按钮 -->
+                <div class="convert-section">
+                    <button id="convert-btn" class="btn btn-primary btn-large" disabled>开始转换</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部状态栏 -->
+        <footer class="app-footer">
+            <div id="status-message" class="status-message">就绪</div>
+            <div id="file-count" class="file-count">0 个文件</div>
+        </footer>
+        
+        <!-- 转换完成通知 -->
+        <div id="conversion-notification" class="conversion-notification">
+            <div class="notification-content">
+                <div class="notification-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 11L12 14L22 4" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H16" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="notification-text">
+                    <div id="notification-title" class="notification-title">转换完成</div>
+                    <div id="notification-message" class="notification-message">成功转换 0 个文件</div>
+                </div>
+                <button id="notification-close" class="notification-close">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
