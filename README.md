@@ -2,6 +2,10 @@
 
 一个功能强大的图片格式转换器Windows客户端，支持常规图片格式以及ICO和SVG格式的相互转换。
 
+## 项目地址
+
+[GitHub仓库](https://github.com/AugeilSun/sa_picture_change)
+
 ## 功能特点
 
 - 支持多种图片格式转换：JPG、PNG、GIF、BMP、WebP、ICO、SVG
